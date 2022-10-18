@@ -1,0 +1,9 @@
+ext {
+    isRelease = true
+
+    applicationID = [
+            appID:"com.tengfly.arouter.app",
+            orderID:"com.tengfly.arouter.order",
+            personalID:"com.tengfly.arouter.personal"
+    ]
+}
