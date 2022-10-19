@@ -49,7 +49,7 @@ dependencies {
     implementation project(path: ':arouter_annotations')
     kapt project(':arouter_compiler')
     implementation project(':arouter_compiler')
-    implementation project(':arouter_api')
+    implementation project(':common')
 
     if (isRelease){ //发布环境，需要依赖子module
         implementation project(path:':order')

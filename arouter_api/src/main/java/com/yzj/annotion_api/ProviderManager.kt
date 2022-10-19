@@ -16,7 +16,7 @@ import java.lang.reflect.Method
  *     package: com.yzj.annotion_api
  * </pre>
  */
-object RouterManager {
+object ProviderManager {
 
     private var group: String = ""
     private var path: String = ""
@@ -25,7 +25,7 @@ object RouterManager {
     private val pathLruCache by lazy { LruCache<String, IARouterPath>(100) }
 
 
-    fun build(path: String): BundleManager {
+    fun build(path: String): ProviderManager {
         if (path.indexOfFirst { it == '/' } != 0 ||
             path.indexOfLast { it == '/' } == 0 ||
             path.indexOfLast { it == '/' } == path.length
@@ -34,23 +34,23 @@ object RouterManager {
         }
         this.group = path.split("/")[1]
         this.path = path
-        return BundleManager()
+        return this
     }
 
 
     /**
-     * TODO 执行页面跳转
+     * TODO 寻址
      *
      * @param context  上下文
      * @param bundleManager   参数管理器
      * @return
      */
-    fun navigation(context: Context, bundleManager: BundleManager): Any {
+    fun navigation(): IProvider {
         //todo 根据group找到管理组的类   ARouter$$Group$${group}
         var groupClassName = groupLruCache.get(group)
         // 缓存中没有找到，反射找到
         if (groupClassName == null) {
-            val clazz = Class.forName("com.tengfly.arouter.group.ARouter$\$Group$\$${group}")
+            val clazz = Class.forName("com.tengfly.arouter.provider.Provider$\$Group$\$${group}")
             groupClassName = clazz.newInstance() as IARouterGroup
             groupLruCache.put(group, groupClassName)
         }
@@ -67,13 +67,6 @@ object RouterManager {
         if (pathClassName.getPathMap().isEmpty()) {
             throw RuntimeException("path路由表加载失败")
         }
-        val targetClass = pathClassName.getPathMap()[path]?.aClass
-
-        val intent = Intent(context, targetClass)
-        intent.putExtras(bundleManager.bundle)
-        context.startActivity(intent)
-
-
-        return ""
+        return pathClassName.getPathMap()[path]!!.aClass!!.newInstance() as IProvider
     }
 }

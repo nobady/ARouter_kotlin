@@ -49,7 +49,6 @@ class ARouterProcessor : AbstractProcessor() {
 
     //操作类的工具
     private lateinit var mElementsUtil: Elements
-
     //
     private lateinit var mTypes: Types
 
@@ -66,7 +65,6 @@ class ARouterProcessor : AbstractProcessor() {
         mMessager = processingEnv.messager
         mElementsUtil = processingEnv.elementUtils
         mTypes = processingEnv.typeUtils
-
 
         val activityElement = mElementsUtil.getTypeElement(ProcessorConfig.ACTIVITY_PACKAGE)
         activityTypeMirror = activityElement.asType()
@@ -119,10 +117,6 @@ class ARouterProcessor : AbstractProcessor() {
                     //直接从path中取
                    group = path.split("/")[1]
                 }
-                mMessager.printMessage(
-                    Diagnostic.Kind.NOTE,
-                    "$activityName 中@ARouter注解的group = $group"
-                )
                 if (!mTypes.isSubtype(it.asType(), activityTypeMirror)) {
                     mMessager.printMessage(
                         Diagnostic.Kind.ERROR,

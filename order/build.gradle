@@ -61,5 +61,5 @@ dependencies {
     implementation project(path: ':arouter_annotations')
     kapt project(':arouter_compiler')
     implementation project(':arouter_compiler')
-    implementation project(':arouter_api')
+    implementation project(':common')
 }

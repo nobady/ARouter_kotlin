@@ -24,5 +24,6 @@ class RouterBean(
 
 enum class TypeEnum {
     ACTIVITY,
-    FRAGMENT
+    FRAGMENT,
+    PROVIDER
 }

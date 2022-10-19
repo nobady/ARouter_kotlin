@@ -18,6 +18,7 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
+import javax.lang.model.type.TypeMirror
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 import javax.tools.Diagnostic
@@ -40,6 +41,7 @@ class ParameterProcessor : AbstractProcessor() {
     private lateinit var mElementsUtil: Elements
     private lateinit var mTypes: Types
     private lateinit var mTypeUtil: TypeUtils
+    private lateinit var iProviderType: TypeMirror
 
     //存放添加了注解的容器，activity为key，加了注解的参数集合为value
     private val parameterMap = HashMap<TypeElement, List<Element>>()
@@ -51,6 +53,8 @@ class ParameterProcessor : AbstractProcessor() {
         mElementsUtil = processingEnv.elementUtils
         mTypes = processingEnv.typeUtils
         mTypeUtil = TypeUtils(mTypes, mElementsUtil)
+
+        iProviderType = mElementsUtil.getTypeElement(ProcessorConfig.AI_PROVIDER_DIR).asType()
     }
 
     override fun getSupportedSourceVersion(): SourceVersion {
@@ -124,14 +128,18 @@ class ParameterProcessor : AbstractProcessor() {
                     activityElement
                 )
 
-            val parameterFactory = ParameterFactory.Builder(funcBuild).setMessager(mMessager).build()
+            val parameterFactory = ParameterFactory.Builder(funcBuild).setMessager(mMessager).setElementUtil(mElementsUtil).build()
 
             parameterList.forEach { element->
                 if (element.modifiers.contains(Modifier.FINAL)){
                     mMessager.printMessage(Diagnostic.Kind.ERROR,"@Parameter注解不能在val字段上应用，请在${element.enclosingElement}中检查${element.simpleName}字段")
                 }
-
-                parameterFactory.buildStatement(mTypeUtil.typeExchange(element),element)
+                //如果是IProvider，说明是从其他模块中获取数组，要单独处理
+                if (mTypes.isSubtype(element.asType(),iProviderType)){
+                    parameterFactory.buildIProviderStatement(element)
+                }else{
+                    parameterFactory.buildStatement(mTypeUtil.typeExchange(element),element)
+                }
             }
 
 

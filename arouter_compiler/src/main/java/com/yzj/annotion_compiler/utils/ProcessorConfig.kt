@@ -15,6 +15,7 @@ object ProcessorConfig {
     const val PARAMETER_PACKAGE = "com.yzj.annotion_params.annotations.Parameter"
 
     const val AROUTER_PACKAGE = "com.yzj.annotion_params.annotations.ARouter"
+    const val PROVIDER_PACKAGE = "com.yzj.annotion_params.annotations.Provider"
 
     const val PARAMETER_CLASS_NAME = "$\$_Parameter"
     const val AROUTER_CLASS_NAME = "$\$_ARouter"
@@ -23,12 +24,17 @@ object ProcessorConfig {
     const val AI_PARAMETER_GET = "${PARAMETER_API_PACKAGE}.IParameterGet"
     const val AI_AROUTER_PATH = "${PARAMETER_API_PACKAGE}.arouter.IARouterPath"
     const val AI_AROUTER_GROUP = "${PARAMETER_API_PACKAGE}.arouter.IARouterGroup"
+    const val AI_PROVIDER_DIR = "${PARAMETER_API_PACKAGE}.IProvider"
 
 
     const val ROOT_AROUTER_PACKAGE = "com.tengfly.arouter"
     const val AROUTER_PATH_DIR = "${ROOT_AROUTER_PACKAGE}.path"
     const val AROUTER_GROUP_DIR = "${ROOT_AROUTER_PACKAGE}.group"
     const val AROUTER_CONSTANT_DIR = "${ROOT_AROUTER_PACKAGE}.constant"
+    const val AROUTER_PROVIDER_DIR = "${ROOT_AROUTER_PACKAGE}.provider"
+
+    const val CLASS_PROVIDER_GROUP_PRE = "Provider$\$Group$\$"
+    const val CLASS_PROVIDER_PATH_PRE = "Provider$\$Path$\$"
 
     const val CLASS_AROUTER_GROUP_PRE = "ARouter$\$Group$\$"
     const val CLASS_AROUTER_PATH_PRE = "ARouter$\$Path$\$"
@@ -37,6 +43,9 @@ object ProcessorConfig {
 
     const val METHOD_PARAMETER_NAME = "targetParameter"
     const val METHOD_FUNCTION_NAME = "getParameter"
+
+    const val FUNCTION_IGROUP_NAME = "getGroupMap"
+    const val FUNCTION_IPATH_NAME = "getPathMap"
 
 
     // Java type
